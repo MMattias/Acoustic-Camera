@@ -1,0 +1,28 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# --- Virtual environment (rebuilt from uv.lock, never committed) ---
+.venv/
+
+# --- Editors / OS ---
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# --- Project data that shouldn't live in git (recordings, captures, outputs) ---
+# Audio/video can be huge; keep raw captures out of the repo.
+sessions/
+*.wav
+*.mp4
+*.avi
+*.npy
+
+# --- Secrets / local config ---
+.env
+*.local

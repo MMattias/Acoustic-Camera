@@ -1,0 +1,57 @@
+[project]
+name = "acoustic-camera"
+version = "0.1.0"
+description = "Locate sound sources by combining a 16-mic array (MiniDSP UMA-16) with a camera, producing a heatmap overlay."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = []
+
+[project.scripts]
+# Lets you run the program by typing `acoustic-camera` in the terminal.
+# It calls the `main()` function inside the `acoustic_camera` package.
+acoustic-camera = "acoustic_camera:main"
+
+[build-system]
+requires = ["uv_build>=0.11.19,<0.12.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+# Tools used while developing, not needed to run the app. Installed by `uv sync`.
+dev = [
+    "mypy>=2.1.0",
+    "pytest>=9.0.3",
+    "ruff>=0.15.16",
+]
+
+# --------------------------------------------------------------------------
+# Tool configuration. Keeping it all here means one place to look.
+# --------------------------------------------------------------------------
+
+[tool.ruff]
+# ruff = linter (catches mistakes) + formatter (auto-tidies style).
+line-length = 100          # wrap lines at 100 characters
+src = ["src", "tests"]     # where our code lives
+
+[tool.ruff.lint]
+# Which families of checks to enable. Each letter is a rule group:
+select = [
+    "E",   # pycodestyle errors (style problems)
+    "F",   # pyflakes (real bugs: unused vars, undefined names)
+    "I",   # isort (keep imports sorted/grouped)
+    "UP",  # pyupgrade (use modern Python syntax)
+    "B",   # flake8-bugbear (bug-prone patterns)
+    "SIM", # flake8-simplify (simpler ways to write things)
+    "ANN", # flake8-annotations (require type hints on functions)
+]
+
+[tool.mypy]
+# mypy = type checker. "strict" turns on all its safety checks — opinionated,
+# but exactly the kind of strong foundation the agentic workflow relies on.
+python_version = "3.12"
+strict = true
+files = ["src", "tests"]
+
+[tool.pytest.ini_options]
+# pytest = test runner. Look for tests in the tests/ folder; -q = quiet output.
+testpaths = ["tests"]
+addopts = "-q"

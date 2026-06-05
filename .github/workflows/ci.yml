@@ -1,0 +1,39 @@
+# Continuous Integration: runs our quality checks on every push and pull request.
+# GitHub runs this automatically and shows a green check (pass) or red X (fail).
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. Grab the code.
+      - uses: actions/checkout@v4
+
+      # 2. Install uv (and Python 3.12), with caching for speed.
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.12"
+          enable-cache: true
+
+      # 3. Install the project + dev tools from the locked versions.
+      - name: Install dependencies
+        run: uv sync --locked
+
+      # 4. The same four checks you run locally — now enforced for everyone.
+      - name: Check formatting
+        run: uv run ruff format --check .
+
+      - name: Lint
+        run: uv run ruff check .
+
+      - name: Type-check
+        run: uv run mypy
+
+      - name: Run tests
+        run: uv run pytest
